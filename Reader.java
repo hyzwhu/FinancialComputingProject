@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class Reader {
+
+
 	public HashMap<String, List<OneDayStock>> readFiles(String path) throws IOException {
 
 		HashMap<String, List<OneDayStock>> result = new HashMap<>();

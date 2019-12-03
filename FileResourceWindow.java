@@ -109,7 +109,6 @@ public class FileResourceWindow extends JFrame implements ActionListener {
 	public HashMap<String, List<OneDayStock>> getAllStock() {
 		return allStock;
 	}
-
 	public void setAllStock(HashMap<String, List<OneDayStock>> allStock) {
 		this.allStock = allStock;
 	}
@@ -128,6 +127,7 @@ public class FileResourceWindow extends JFrame implements ActionListener {
 
 			try {
 				allStock = new Reader().readFiles(s);
+				mainWindow.setAbsPath(s);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

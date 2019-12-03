@@ -7,6 +7,8 @@ package com.group.financialcomputing;/*
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,10 @@ public class MainWindow extends JFrame implements ActionListener {
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
+		//test
+		this.pyPath = "/Users/yongzhaohuang/Documents/python_project";
+
+
 		this.setTitle("FinancialComputing");
 		jMenuBar1 = new JMenuBar();
 		jMenu1 = new JMenu();
@@ -121,6 +127,27 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JMenu jMenu7;
 	private JMenuBar jMenuBar1;
 	private HashMap<String, List<OneDayStock>> allStock = new HashMap<>();
+	private String pyPath = new String();
+	private String absPath = new String();
+
+	public String getPyPath() {
+		return pyPath;
+	}
+
+	public void setPyPath(String pyPath) {
+		this.pyPath = pyPath;
+	}
+
+
+	public String getAbsPath() {
+		return absPath;
+	}
+
+	public void setAbsPath(String absPath) {
+		this.absPath = absPath;
+	}
+
+
 
 	public HashMap<String, List<OneDayStock>> getAllStock() {
 		return allStock;
@@ -140,8 +167,56 @@ public class MainWindow extends JFrame implements ActionListener {
 			if (actionEvent.getActionCommand().equals("Load")) {
 				FileResourceWindow fr = new FileResourceWindow(this);
 				fr.setVisible(true);
+
 			}
 			else if (actionEvent.getActionCommand().equals("Optimization")){
+				//new txt to store data
+				int numberOfStock = allStock.size();
+				int numberOfDay = 253;
+				File file = new File("stockCloseData.txt");
+				FileWriter out = null;
+				try {
+					out = new FileWriter(file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+
+				String[][] stockCloseData = new String[numberOfStock][numberOfDay];
+				int count = 0;
+				for(String key: allStock.keySet()) {
+					stockCloseData[count][0] = key;
+					for(int i = 1; i < numberOfDay; i++) {
+						stockCloseData[count][i] = String.valueOf(allStock.get(key).get(i-1).getClose());
+					}
+					count++;
+				}
+
+				for (int i = 0; i < numberOfDay; i++) {
+					for (int j = 0; j < numberOfStock; j++) {
+						try {
+							out.write(stockCloseData[j][i]);
+							if (j != numberOfStock - 1) {
+								out.write(",");
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					try {
+						out.write("\n");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				//new txt to store data , for python programme read
 				OptimizationWindow optimizationWindow = new OptimizationWindow();
 				optimizationWindow.setVisible(true);
 			}
@@ -150,6 +225,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				stockPickWindow.setVisible(true);
 			}
 			else if (actionEvent.getActionCommand().equals("Manage")){
+				System.out.println("this in main window:"+ this.absPath);
 				try {
 					StockManagementWindow stockManagementWindow = new StockManagementWindow(this);
 					stockManagementWindow.setVisible(true);

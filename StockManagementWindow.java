@@ -6,11 +6,15 @@ package com.group.financialcomputing;
  * and open the template in the editor.
  */
 
+import org.jfree.ui.RefineryUtilities;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +45,8 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 	private String choosenPickedStocksString;
 	private DefaultListModel stocksListMode = new DefaultListModel();
 	private DefaultListModel pickedStocksListMode = new DefaultListModel();
+	private String pyPath ;
+	private String absPath;
 	// End of variables declaration
 
 	public Map<String, List<OneDayStock>> getPickedStocks() {
@@ -61,6 +67,8 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 	public StockManagementWindow(MainWindow mainWindow) throws IOException {
 		this.stocks = mainWindow.getAllStock();
 		this.stocksListMode.addAll(stocks.keySet());
+		this.pyPath = mainWindow.getPyPath();
+		this.absPath = mainWindow.getAbsPath();
 		initComponents();
 	}
 
@@ -109,10 +117,10 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 		jButton3.setText("Visualize");
 		jButton3.addActionListener(this);
 
-		jButton4.setText("Hide");
+		jButton4.setText("Estimate");
 		jButton4.addActionListener(this);
 
-		jButton5.setText("OK");
+		jButton5.setText("Optimization");
 		jButton5.addActionListener(this);
 
 		jButton6.setText("Cancel");
@@ -207,14 +215,64 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 			pickedStocksListMode.removeElement(choosenPickedStocksString);
 			pickedStocks.remove(choosenPickedStocksString);
 		} else if (actionEvent.getActionCommand().equals("Visualize")) {
+			showstockWindow fjc = new showstockWindow(this,"折线图");
+			fjc.pack();
+			RefineryUtilities.centerFrameOnScreen(fjc);
+			fjc.setVisible(false);
+		} else if (actionEvent.getActionCommand().equals(jButton4.getText())) {
+			EstimationWindow estimationWindow = new EstimationWindow(choosenPickedStocksString,this.pyPath,this.absPath);
+			estimationWindow.setVisible(true);
+		} else if (actionEvent.getActionCommand().equals(jButton5.getText())) {
+			int numberOfStock = pickedStocks.size();
+			int numberOfDay = 253;
+			File file = new File("stockCloseData.txt");
+			FileWriter out = null;
+			try {
+				out = new FileWriter(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-		} else if (actionEvent.getActionCommand().equals("Hide")) {
 
-		} else if (actionEvent.getActionCommand().equals("OK")) {
-			StockPWindow stockPWindow = new StockPWindow(this);
-			stockPWindow.setVisible(true);
+			String[][] stockCloseData = new String[numberOfStock][numberOfDay];
+			int count = 0;
+			for(String key: pickedStocks.keySet()) {
+				stockCloseData[count][0] = key;
+				for(int i = 1; i < numberOfDay; i++) {
+					stockCloseData[count][i] = String.valueOf(pickedStocks.get(key).get(i-1).getClose());
+				}
+				count++;
+			}
+
+			for (int i = 0; i < numberOfDay; i++) {
+				for (int j = 0; j < numberOfStock; j++) {
+					try {
+						out.write(stockCloseData[j][i]);
+						if (j != numberOfStock - 1) {
+							out.write(",");
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				try {
+					out.write("\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			OptimizationWindow optimizationWindow = new OptimizationWindow(this);
+			optimizationWindow.setVisible(true);
 		} else if (actionEvent.getActionCommand().equals("Cancel")) {
 			this.dispose();
 		}
 	}
 }
+
