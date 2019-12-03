@@ -84,6 +84,7 @@ public class EstimationWindow extends javax.swing.JFrame implements ActionListen
 		jButton1.addActionListener(this);
 
 		jButton2.setText("Cancel");
+		jButton2.addActionListener(this);
 
 		jTextField3.addActionListener(this);
 
@@ -181,11 +182,13 @@ public class EstimationWindow extends javax.swing.JFrame implements ActionListen
 		if (actionEvent.getActionCommand().equals(jButton1.getText())) {
 			try {
 				String[] command = new String[]{"python3", this.pyPath + "/estimation.py", this.dataDirPath , jTextField1.getText(), jTextField2.getText(), this.stockName};
+//				System.out.println("EstimationWindow pypath:" + this.pyPath);
+//				System.out.println("EstimationWindow datadIRPATH" + this.dataDirPath);
 				Process proc;
 				proc = Runtime.getRuntime().exec(command);
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
-				System.out.println("begin read");
+//				System.out.println("begin read");
 
 				int count = 0;
 				String token = new String();
@@ -203,6 +206,8 @@ public class EstimationWindow extends javax.swing.JFrame implements ActionListen
 			}catch (InterruptedException e){
 				e.printStackTrace();
 			}
+		}else if (actionEvent.getActionCommand().equals(jButton2.getText())){
+			this.dispose();
 		}
 	}
 

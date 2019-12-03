@@ -45,6 +45,15 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 	private String choosenPickedStocksString;
 	private DefaultListModel stocksListMode = new DefaultListModel();
 	private DefaultListModel pickedStocksListMode = new DefaultListModel();
+
+	public String getPyPath() {
+		return pyPath;
+	}
+
+	public void setPyPath(String pyPath) {
+		this.pyPath = pyPath;
+	}
+
 	private String pyPath ;
 	private String absPath;
 	// End of variables declaration

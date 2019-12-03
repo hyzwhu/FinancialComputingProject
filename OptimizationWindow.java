@@ -37,6 +37,8 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 	private JList portfolioJlist = new JList();
 	private List<String> showPortfolio = new ArrayList<>();
 	private int numberOfStock;
+	private String pyPath;
+	//private String absPath;
 	// End of variables declaration
 	/**
 	 *
@@ -47,11 +49,13 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 	}
 
 	public OptimizationWindow(MainWindow mainWindow) {
+		this.pyPath =mainWindow.getPyPath();
 		this.numberOfStock = mainWindow.getAllStock().size();
 		initComponents();
 	}
 
 	public OptimizationWindow(StockManagementWindow stockManagementWindow) {
+		this.pyPath = stockManagementWindow.getPyPath();
 		this.numberOfStock = stockManagementWindow.getPickedStocks().size();
 		initComponents();
 	}
@@ -103,6 +107,7 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 		jButton1.addActionListener(this);
 
 		jButton3.setText("Cancel");
+		jButton3.addActionListener(this);
 
 		jLabel7.setText("Fix Return:");
 
@@ -234,16 +239,19 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 	public void actionPerformed(ActionEvent actionEvent) {
 		if (actionEvent.getActionCommand().equals(jButton1.getText())){
 			//double riskFree = Double.parseDouble(jTextField1.getText());
+			portfolioMode.clear();
 			try {
-				String[] command = new String[]{"python3", "/Users/yongzhaohuang/Documents/python_project/portfolio.py", jTextField1.getText()};
+				String[] command = new String[]{"python3", this.pyPath + "/portfolio.py", jTextField1.getText()};
 				Process proc;
+				//System.out.println("optimization this.pyPath-----:" + this.pyPath);
 				proc = Runtime.getRuntime().exec(command);
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
-				System.out.println("begin read");
+				//System.out.println("begin read");
 				String[] token = null;
 				String[][] portfolioOfStock = new String[(numberOfStock + 4)][2];
 				int count = 0;
+				//System.out.println("numberOfStock:" + numberOfStock);
 				while ((line = in.readLine()) != null) {
 					token = line.split(" ");
 					portfolioOfStock[count][0] = token[0];
@@ -260,7 +268,7 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 				proc.waitFor();
 				jTextField2.setText(portfolioOfStock[numberOfStock][1]);   //expected return
 				jTextField3.setText(portfolioOfStock[numberOfStock + 1][1]);   //volatility
-				for(int i = 0 ; i < portfolioOfStock.length - 2 ; i++) {
+				for(int i = 0 ; i < portfolioOfStock.length - 4 ; i++) {
 					portfolioMode.addElement(portfolioOfStock[i][0] + "\t" + " " + portfolioOfStock[i][1]);
 				}
 
@@ -272,7 +280,7 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 
 		}
 		else if (actionEvent.getActionCommand().equals(jButton3.getText())) {
-			this.setVisible(false);
+			this.dispose();
 		}
 	}
 

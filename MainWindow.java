@@ -35,7 +35,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 		//test
-		this.pyPath = "/Users/yongzhaohuang/Documents/python_project";
+		this.pyPath = System.getProperty("user.dir");
 
 
 		this.setTitle("FinancialComputing");
@@ -217,7 +217,7 @@ public class MainWindow extends JFrame implements ActionListener {
 				}
 
 				//new txt to store data , for python programme read
-				OptimizationWindow optimizationWindow = new OptimizationWindow();
+				OptimizationWindow optimizationWindow = new OptimizationWindow(this);
 				optimizationWindow.setVisible(true);
 			}
 			else if (actionEvent.getActionCommand().equals("Stock Pick")) {
@@ -225,7 +225,8 @@ public class MainWindow extends JFrame implements ActionListener {
 				stockPickWindow.setVisible(true);
 			}
 			else if (actionEvent.getActionCommand().equals("Manage")){
-				System.out.println("this in main window:"+ this.absPath);
+				//System.out.println("number of stock window:"+ this.allStock.size());
+
 				try {
 					StockManagementWindow stockManagementWindow = new StockManagementWindow(this);
 					stockManagementWindow.setVisible(true);
