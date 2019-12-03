@@ -232,16 +232,17 @@ public class StockManagementWindow extends javax.swing.JFrame implements ListSel
 			EstimationWindow estimationWindow = new EstimationWindow(choosenPickedStocksString,this.pyPath,this.absPath);
 			estimationWindow.setVisible(true);
 		} else if (actionEvent.getActionCommand().equals(jButton5.getText())) {
+
 			int numberOfStock = pickedStocks.size();
 			int numberOfDay = 253;
 			File file = new File("stockCloseData.txt");
 			FileWriter out = null;
+
 			try {
 				out = new FileWriter(file);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 
 			String[][] stockCloseData = new String[numberOfStock][numberOfDay];
 			int count = 0;

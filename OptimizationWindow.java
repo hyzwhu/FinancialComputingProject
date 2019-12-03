@@ -38,7 +38,6 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 	private List<String> showPortfolio = new ArrayList<>();
 	private int numberOfStock;
 	private String pyPath;
-	//private String absPath;
 	// End of variables declaration
 	/**
 	 *
@@ -195,46 +194,6 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 		pack();
 	}// </editor-fold>
 
-
-	/**
-	 * @param args the command line arguments
-	 */
-//	public static void main(String args[]) {
-//		/* Set the Nimbus look and feel */
-//		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-//		 */
-//		try {
-//			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//				if ("Nimbus".equals(info.getName())) {
-//					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//					break;
-//				}
-//			}
-//		} catch (ClassNotFoundException ex) {
-//			java.util.logging.Logger.getLogger(OptimizationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (InstantiationException ex) {
-//			java.util.logging.Logger.getLogger(OptimizationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (IllegalAccessException ex) {
-//			java.util.logging.Logger.getLogger(OptimizationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//			java.util.logging.Logger.getLogger(OptimizationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		}
-//		//</editor-fold>
-//		//</editor-fold>
-//		//</editor-fold>
-//		//</editor-fold>
-//
-//		/* Create and display the form */
-//		java.awt.EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				new OptimizationWindow().setVisible(true);
-//			}
-//		});
-//	}
-
-
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		if (actionEvent.getActionCommand().equals(jButton1.getText())){
@@ -243,15 +202,14 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 			try {
 				String[] command = new String[]{"python3", this.pyPath + "/portfolio.py", jTextField1.getText()};
 				Process proc;
-				//System.out.println("optimization this.pyPath-----:" + this.pyPath);
 				proc = Runtime.getRuntime().exec(command);
+
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
-				//System.out.println("begin read");
 				String[] token = null;
 				String[][] portfolioOfStock = new String[(numberOfStock + 4)][2];
 				int count = 0;
-				//System.out.println("numberOfStock:" + numberOfStock);
+
 				while ((line = in.readLine()) != null) {
 					token = line.split(" ");
 					portfolioOfStock[count][0] = token[0];
@@ -262,7 +220,6 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 						}
 					}
 					count++;
-//					System.out.println(line);
 				}
 				in.close();
 				proc.waitFor();
@@ -271,19 +228,14 @@ public class OptimizationWindow extends javax.swing.JFrame implements ActionList
 				for(int i = 0 ; i < portfolioOfStock.length - 4 ; i++) {
 					portfolioMode.addElement(portfolioOfStock[i][0] + "\t" + " " + portfolioOfStock[i][1]);
 				}
-
 			}catch (IOException e){
 				e.printStackTrace();
 			}catch (InterruptedException e){
 				e.printStackTrace();
 			}
-
 		}
 		else if (actionEvent.getActionCommand().equals(jButton3.getText())) {
 			this.dispose();
 		}
 	}
-
-
-
 }

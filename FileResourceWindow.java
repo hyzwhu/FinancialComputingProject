@@ -36,7 +36,6 @@ public class FileResourceWindow extends JFrame implements ActionListener {
 	 */
 	@SuppressWarnings("unchecked")
 	private void initComponents() {
-
 		this.setTitle("FinancialComputing");
 		jLabel1 = new JLabel();
 		jTextField1 = new JTextField();
@@ -56,9 +55,6 @@ public class FileResourceWindow extends JFrame implements ActionListener {
 
 		jButton3.setText("Next");
 		jButton3.addActionListener(this);
-
-
-
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);

@@ -139,68 +139,23 @@ public class EstimationWindow extends javax.swing.JFrame implements ActionListen
 		pack();
 	}// </editor-fold>
 
-
-
-	/**
-	 * @param args the command line arguments
-	 */
-//	public static void main(String args[]) {
-//		/* Set the Nimbus look and feel */
-//		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//		 * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-//		 */
-//		try {
-//			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//				if ("Nimbus".equals(info.getName())) {
-//					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//					break;
-//				}
-//			}
-//		} catch (ClassNotFoundException ex) {
-//			java.util.logging.Logger.getLogger(EstimationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (InstantiationException ex) {
-//			java.util.logging.Logger.getLogger(EstimationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (IllegalAccessException ex) {
-//			java.util.logging.Logger.getLogger(EstimationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//			java.util.logging.Logger.getLogger(EstimationWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//		}
-//		//</editor-fold>
-//
-//		/* Create and display the form */
-//		java.awt.EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				new EstimationWindow().setVisible(true);
-//			}
-//		});
-//	}
-
-
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		if (actionEvent.getActionCommand().equals(jButton1.getText())) {
 			try {
 				String[] command = new String[]{"python3", this.pyPath + "/estimation.py", this.dataDirPath , jTextField1.getText(), jTextField2.getText(), this.stockName};
-//				System.out.println("EstimationWindow pypath:" + this.pyPath);
-//				System.out.println("EstimationWindow datadIRPATH" + this.dataDirPath);
 				Process proc;
 				proc = Runtime.getRuntime().exec(command);
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
-//				System.out.println("begin read");
-
 				int count = 0;
 				String token = new String();
 				while ((line = in.readLine()) != null) {
 					token = line;
-
 				}
 				in.close();
 				proc.waitFor();
 				jTextField3.setText(token);
-				//jTextField3.setText(token);   // value of beta
-
 			}catch (IOException e){
 				e.printStackTrace();
 			}catch (InterruptedException e){

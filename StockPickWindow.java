@@ -40,10 +40,6 @@ public class StockPickWindow extends javax.swing.JFrame implements ActionListene
 	 * Creates new form StockPick
 	 */
 	public StockPickWindow() {
-		this.defaultListModel.addAll(allStocks.keySet());
-		//this.pyPath = mainWindow.getPyPath();
-		this.dataDirPath = "/Users/yongzhaohuang/Documents/python_project/teach/comp5513/assign/tdata";
-		this.pyPath = "/Users/yongzhaohuang/IdeaProjects/FinancialComputingProject/out/artifacts/FinancialComputingProject_jar";
 		initComponents();
 	}
 
@@ -52,8 +48,6 @@ public class StockPickWindow extends javax.swing.JFrame implements ActionListene
 		this.defaultListModel.addAll(allStocks.keySet());
 		this.pyPath = mainWindow.getPyPath();
 		this.dataDirPath = mainWindow.getAbsPath();
-		//this.pyPath = "/Users/yongzhaohuang/IdeaProjects/FinancialComputingProject/out/artifacts/FinancialComputingProject_jar";
-
 		initComponents();
 	}
 
@@ -72,7 +66,6 @@ public class StockPickWindow extends javax.swing.JFrame implements ActionListene
 		jButton2 = new javax.swing.JButton();
 		jButton3 = new javax.swing.JButton();
 		jButton4 = new javax.swing.JButton();
-
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		jList.setModel(defaultListModel);
@@ -144,39 +137,28 @@ public class StockPickWindow extends javax.swing.JFrame implements ActionListene
 
 		}
 		else if (actionEvent.getActionCommand().equals(jButton2.getText())) {  //OK button
-			//System.out.println("hello world");
 			try {
 				//Based on MACD indicator, the stock is stronger as the MACD is greater.
 				defaultListModel.clear();
-
-				//System.out.println("enter in Ok button ");
-				//System.out.println("enter type:" + this.input_type);
 				String[] cmd = new String[]{"python3", this.pyPath +"/rank.py", input_type, this.dataDirPath};
 				Process proc = Runtime.getRuntime().exec(cmd);
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
-
 				String token = new String();
 				while ((line = in.readLine()) != null) {
 					token = line;
 				}
 				token = token.replaceAll("'|[\\[\\]]","");
-
-//				System.out.print(token);
-
 				String[] tokenArr = token.split(",");
 				List<String> tokenList = new ArrayList<>();
 				for(int i = 0; i < tokenArr.length; i++) {
 					tokenList.add(tokenArr[i]);
 				}
-
-
 				in.close();
 				proc.waitFor();
 
 				defaultListModel.addAll(tokenList);
 				scrollPane1.add(jList);
-
 			} catch(IOException e) {
 				e.printStackTrace();
 			} catch(InterruptedException ie) {

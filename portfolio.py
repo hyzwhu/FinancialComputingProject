@@ -10,43 +10,11 @@ def CalculatePortfolio(riskFree):
     #get StockPrices and ticker_list
     abs_path = os.path.abspath('.')
     #print(abs_path)
-    stock_data = pd.read_csv(abs_path + "/stockCloseData.txt");
+    stock_data = pd.read_csv(abs_path + "/stockCloseData.txt")
 
 
     number = 1000
 
-
-   #
-   #  abs_path = os.path.abspath('.')
-   #  print(abs_path)
-   #  data1 = pd.read_csv(abs_path + "/AA.txt")
-   #
-   #  b1 = data1.iloc[0:252]
-   #  c1 = b1['Close']
-   #
-   #  data2 = pd.read_csv(abs_path + "/KO.txt")
-   #  b2 = data2.iloc[0:252]
-   #  c2 = b2['Close']
-   #
-   #  data3 = pd.read_csv(abs_path + "/WMT.txt")
-   #  b3 = data3.iloc[0:252]
-   #  c3 = b3['Close']
-   #
-   #  data4 = pd.read_csv(abs_path + "/HD.txt")
-   #  b4 = data4.iloc[0:252]
-   #  c4 = b4['Close']
-   #
-   #  d = pd.concat([c1, c2, c3, c4], axis=1, join_axes=[c1.index])
-   #  # d2 = pd.concat([d1, c3], axis=1, join_axes=[d1.index])
-   #
-   #  d.columns = ['AA', 'KO', 'WMT',"HD"]
-   #  #set the number of potfolio and StockNumber
-   #  number = 1000
-   #  StockNumber = 4
-   #  ticker_list = d.columns
-   #
-   #
-   #  StockPrices = pd.DataFrame(d)
     #get StockReturns
     StockPrices = pd.DataFrame(stock_data)
     StockReturns = StockPrices.pct_change().dropna()

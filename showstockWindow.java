@@ -150,8 +150,5 @@ public class showstockWindow extends ApplicationFrame {
         combineddomainxyplot.setGap(10);//设置两个图形区域对象之间的间隔空间
         JFreeChart chart = new JFreeChart(this.name, JFreeChart.DEFAULT_TITLE_FONT, combineddomainxyplot, false);
         ChartFrame frame = new ChartFrame(this.name, chart);      frame.pack();      frame.setVisible(true);
-
-
     }
-
 }
